@@ -1,0 +1,30 @@
+export type TSessionData = {
+  userId: number;
+  accountId: number;
+  sessionId: string;
+  username: string;
+};
+
+export type THttpResponseError = {
+  config: THttpRequestConfig;
+  message: string;
+  response: THttpResponse;
+};
+
+export type THttpRequestConfig = {
+  crossDomain: boolean;
+  method: 'GET' | 'PUT' | 'POST' | 'DELETE';
+  headers: {};
+  responseType: 'json';
+  url: string;
+  withCredentials: boolean;
+};
+
+export type THttpResponse = {
+  config: THttpRequestConfig;
+  data: [] | {};
+};
+
+export type THttpService = Function & {
+  getJSON: Function;
+};

@@ -1,0 +1,17 @@
+@import 'variables';
+
+
+#root {
+  height: 100vh;
+}
+
+.ant-table td {
+  white-space: nowrap;
+}
+.ant-table-thead > tr > th {
+  background-color: whitesmoke !important;
+  font-size: 14px;
+}
+.ant-table-pagination.ant-pagination {
+  margin: 0 1.25rem 0.5rem;
+}

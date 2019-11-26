@@ -1,0 +1,25 @@
+{
+  "assets": {
+    "scripts": [
+      {
+        "src": "https://@@TLA.@@ENVIRONMENT.internal/static/js/main.@@BUILD.js"
+      }
+    ],
+    "styles": [
+      {
+        "rel": "stylesheet",
+        "href": "https://@@TLA.@@ENVIRONMENT.internal/static/css/main.@@BUILD.css"
+      }
+    ]
+  },
+  "bootstrap": {
+    "root": "/"
+  },
+  "description": "Outage Handler",
+  "fullname": "Outage Handler",
+  "name": "Outage Handler",
+  "hidden": false,
+  "tla": "oh",
+  "version": "0.0.1",
+  "template": "agnostic"
+}

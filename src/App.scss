@@ -1,0 +1,18 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+
+  &__container {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+    background-color: lightsteelblue;
+  }
+
+  &__main {
+    height: 100%;
+  }
+
+}
