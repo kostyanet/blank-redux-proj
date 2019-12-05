@@ -5,7 +5,8 @@ import { TStore } from '../types/store/store';
 
 const reducers: { [key: string ]: Reducer } = {};
 const namespaces = [
-  'testModel'
+  'testModel',
+  'marketsList'
 ];
 
 function reducerAtomic(namespace: string): Reducer {

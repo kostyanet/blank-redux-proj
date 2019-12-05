@@ -8,7 +8,10 @@ export type TSessionData = {
 export type THttpResponseError = {
   config: THttpRequestConfig;
   message: string;
+  request: THttpRequestConfig;
   response: THttpResponse;
+  status: number;
+  xhr: XMLHttpRequest;
 };
 
 export type THttpRequestConfig = {
@@ -23,6 +26,7 @@ export type THttpRequestConfig = {
 export type THttpResponse = {
   config: THttpRequestConfig;
   data: [] | {};
+  message: string;
 };
 
 export type THttpService = Function & {

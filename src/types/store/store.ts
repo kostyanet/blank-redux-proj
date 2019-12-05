@@ -1,5 +1,8 @@
+import { TMarketsListModel } from './marketsList';
+
 export type TStore = Readonly<{
   testModel: any;
+  marketsList: TMarketsListModel;
 }>;
 
 export type TBaseModel = Readonly<{

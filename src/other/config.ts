@@ -18,6 +18,6 @@ export const CONFIG = {
   },
 
   ENDPOINTS: {
-    CONFIGS: 'http://192.168.160.100:8085/VideoAdminAPI/v1.0/listConfigurationItems',
+    TEST: 'https://api.github.com/users?per_page=5',
   }
 };

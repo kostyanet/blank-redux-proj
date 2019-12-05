@@ -1,6 +1,6 @@
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { CONFIG } from '../config';
 import { isObjectLiteral, isProdMode } from '../utils';
@@ -8,7 +8,6 @@ import { isObjectLiteral, isProdMode } from '../utils';
 // import showWarningNotification from '../../components/Error/showWarningNotification';
 import {
   THttpRequestConfig,
-  THttpResponse,
   THttpResponseError,
   THttpService,
   TSessionData
@@ -40,30 +39,26 @@ export class Http {
   }
 
   private handleResponse = (result: AjaxResponse): Observable<Error> | Partial<AjaxResponse> => {
-    const { request, response, status, xhr/*: XMLHttpRequest*/ } = result;
-    debugger
-    // if (isObjectLiteral(data) && (data.faultcode || data.faultstring)) {
-    //   const { detail, faultcode, faultstring } = data;
-    //   const errorResponse = {
-    //     status: `${faultcode}, ${faultstring}`,
-    //     statusText: detail.message
-    //   };
-    //   showErrorNotification(config, errorResponse);
-    //   return Promise.reject(new Error('Error server response!'));
-    // }
-
-    // if (isObjectLiteral(data) && data.status && data.status.toUpperCase() !== 'OK') {
-    //   const warnings = { ...data };
-    //   delete warnings.status;
-    //   showWarningNotification(config, warnings);
-    //   return Promise.reject(new Error('Warning server response!'));
-    // }
-    return response;
+    return result.response;
   };
 
   private handleError = (error: THttpResponseError): Observable<THttpResponseError> => {
-    const { config, message, response } = error;
-    debugger
+    const {
+      message,
+      request: { method, url },
+      response,
+      status,
+      xhr: { statusText }
+    } = error;
+
+    const msg = `${method.toUpperCase()} ${url} -- ${status}: ${statusText} -- ${message}`;
+    const errorData = {
+      message: response.message || message,
+      method,
+      status,
+      statusText,
+      url
+    };
 
     // showErrorNotification(config, response);
     // let msg;
@@ -76,8 +71,8 @@ export class Http {
     //   msg = `${method.toUpperCase()} ${url} -- ${status}: ${statusText} -- ${message}`;
     // }
 
-    // window.console.error(msg);
-    return of(error);
+    window.console.error(msg);
+    return throwError(error);
   };
 
   private send(body: any, options: Partial<THttpRequestConfig>): Observable<any> {

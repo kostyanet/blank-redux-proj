@@ -1,0 +1,15 @@
+.TreeWrapper {
+  background-color: whitesmoke;
+  padding: 2rem;
+  flex: 1;
+  overflow: auto;
+
+  &__content {
+    margin: 0 auto;
+    background-color: white;
+    width: 800px !important;
+    border: lightgrey 1px solid;
+    border-radius: 4px;
+  }
+
+}

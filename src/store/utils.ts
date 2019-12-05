@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import store from './store';
-import http from '../other/services/http';
+import { Observable, of } from 'rxjs';
+import { TAction } from '../types/store/store';
 
 
 export const fetchAction = (type, data={}) => ({
@@ -26,6 +27,16 @@ export const failAction = (type, error=void 0) => ({
     error
   }
 });
+
+/** Returns a bunch of action creators used in async cases. */
+export function createAsyncActions(start: string, ok: string, fail: string):
+  { [key: string]: (param: any) => TAction | Observable<TAction> } {
+  return {
+    request: (payload: any) => fetchAction(start, payload),
+    success: (payload: any) => successAction(ok, payload),
+    error: ({ message }: Error) => of(failAction(fail, message))
+  };
+}
 
 export function areEqual(x, y) {
   return (x && JSON.stringify(x)) === (y && JSON.stringify(y));

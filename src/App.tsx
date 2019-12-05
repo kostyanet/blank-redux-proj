@@ -1,14 +1,9 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import './App.scss';
 import RouteSwitch from './components/RouteSwitch';
 
-const App: React.FC = () => (
+const App: React.FC = (): ReactElement => (
   <div className="App">
-    <header className="App-header">
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-    </header>
     <RouteSwitch />
   </div>
 );
