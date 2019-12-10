@@ -1,7 +1,9 @@
 import { message } from 'antd';
 import store from './store';
-import { Observable, of } from 'rxjs';
-import { TAction } from '../types/store/store';
+import { Observable, Observer, of, Subject } from 'rxjs';
+import { TAction, TEpic, TEpicDeps, TStore } from '../types/store/store';
+import { ActionsObservable, StateObservable } from 'redux-observable';
+import { toArray } from 'rxjs/operators';
 
 
 export const fetchAction = (type, data={}) => ({
@@ -29,12 +31,13 @@ export const failAction = (type, error=void 0) => ({
 });
 
 /** Returns a bunch of action creators used in async cases. */
-export function createAsyncActions(start: string, ok: string, fail: string):
-  { [key: string]: (param: any) => TAction | Observable<TAction> } {
+export function createAsyncActions<A extends string>(start: A, ok: A, fail: A):
+  { [key: string]: (param: any) => TAction<A> | Observable<TAction<A>> } {
   return {
     request: (payload: any) => fetchAction(start, payload),
     success: (payload: any) => successAction(ok, payload),
-    error: ({ message }: Error) => of(failAction(fail, message))
+    error: ({ message }: Error) => of(failAction(fail, message)),
+    _testError: ({ message }: Error) => failAction(fail, message)
   };
 }
 
@@ -61,6 +64,31 @@ export function reportError(error) {
 
 
 // TEST UTILS
+/**
+ * Test epic runner.
+ */
+export function er(
+  epic: TEpic<any>,
+  initialState: TStore,
+  action: TAction<any>,
+  dependencies: TEpicDeps
+): Function {
+  return function _runner(
+    callback: Observer<any>,
+    state: TStore = {} as any
+  ): void {
+    const stateSubject = new Subject();
+    const fakeStore = { ...initialState, ...state };
+    const state$: any = new StateObservable(stateSubject, fakeStore);
+    const action$ = ActionsObservable.of(action);
+
+    epic(action$, state$, dependencies).pipe(
+      toArray()
+    ).subscribe(callback);
+  }
+}
+
+
 // export function mockHttpGet(response) {
 //   http.get = jest.fn(() => Promise.resolve({
 //     status: 200,

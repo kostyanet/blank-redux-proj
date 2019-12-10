@@ -22,7 +22,7 @@ const composeEnhancers = (
 const epicOptions = {
   dependencies: { http }
 };
-const epicMiddleware = createEpicMiddleware<TAction, TAction, TStore>(epicOptions);
+const epicMiddleware = createEpicMiddleware<TAction<any>, TAction<any>, TStore>(epicOptions);
 const logger = createLogger({ collapsed: true });
 
 const enhancer = composeEnhancers(

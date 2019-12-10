@@ -1,4 +1,8 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
+import { TAction, TEpic, TEpicDeps, TStore } from '../types/store/store';
+import { Observer, Subject, Subscription } from 'rxjs';
+import { ActionsObservable, StateObservable } from 'redux-observable';
+import { toArray } from 'rxjs/operators';
 
 /** Object literal checker */
 export function isObjectLiteral(x: any): boolean {
@@ -20,13 +24,21 @@ export function convertMsToISOMidnightAsUTC(date: Date): string {
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)).toISOString();
 }
 
-export function momentToIso(momentObject) {
+/**
+ * Converts Moment date object into ISO date string;
+ * @param momentObject
+ */
+export function momentToIso(momentObject: Moment): string {
   if (!moment.isMoment(momentObject)) return momentObject;
   return momentObject.toISOString();
 }
 
-export function isoDateToMoment(isoDate) {
-  const date = moment(isoDate);
+/**
+ * Converts ISO date string into Moment.
+ * @param isoDate
+ */
+export function isoDateToMoment(isoDate: string): Moment | string {
+  const date: Moment = moment(isoDate);
   return date.isValid() ? date.utcOffset(0) : isoDate;
 }
 

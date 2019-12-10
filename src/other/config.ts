@@ -1,5 +1,5 @@
 export const CONFIG = {
-  BASE_URL_DEV: '',
+  BASE_URL_DEV: 'http://127.0.0.1:7777',
   BASE_URL_PROD: '',
   // PROD_BASE_URL: '',
   // DEV_BASE_URL: 'http://127.0.0.1:7777/VideoAPI/v1.0',
@@ -18,6 +18,7 @@ export const CONFIG = {
   },
 
   ENDPOINTS: {
+    MARKETS_LIST: '/retrieveCleanupCandidates',
     TEST: 'https://api.github.com/users?per_page=5',
   }
 };

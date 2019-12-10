@@ -1,17 +1,16 @@
-import { Epic, ofType } from 'redux-observable';
 import { Observable } from 'rxjs';
+import { ofType } from 'redux-observable';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
 import { CONFIG } from '../../other/config';
 import { retrieveTestDataAsync } from '../actions/testActions';
 
-import { TAction, TStore } from '../../types/store/store';
+import { TEpic } from '../../types/store/store';
 import { TTestActions } from '../enums/testEnums';
 
 
-
-const testEpic: Epic<TAction, TAction, TStore> = (action$, store$, { http }) => {
-  const fetchTestData = (action: TAction): Observable<any> =>
+const testEpic: TEpic<TTestActions> = (action$, store$, { http }) => {
+  const fetchTestData = (): Observable<any> =>
     http.get(CONFIG.ENDPOINTS.TEST).pipe(
       map(retrieveTestDataAsync.success),
     );

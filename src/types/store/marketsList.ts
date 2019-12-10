@@ -1,7 +1,8 @@
 import { TBaseModel } from './store';
+import { TTreeItem } from '../treeItem';
 
 export type TMarketsListModel = TBaseModel & Readonly<{
-  list: any[];
+  list: TTreeItem[];
   requestParams: TMarketsListRequestParams;
 }>;
 

@@ -4,7 +4,7 @@ import marketsListEpics from './marketsListEpics';
 import testEpics from '../epics/testEpic';
 
 const epics = combineEpics(
-  ...marketsListEpics,
+  ...(marketsListEpics || []), // test runner workaround
   ...testEpics,
 );
 

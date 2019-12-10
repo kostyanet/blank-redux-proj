@@ -39,7 +39,7 @@ TreeWrapper.propTypes = {
 const mapStateToProps = (state: TStore) => {
   const { marketsList: { isPending, list } } = state;
   return {
-    isPending,
+    isLoading: isPending,
     items: list
   };
 };

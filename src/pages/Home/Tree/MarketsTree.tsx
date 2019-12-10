@@ -11,48 +11,73 @@ type Props = {
   onToggle: Function;
 };
 type State = {
-  userExpandedKeys: string[];
   autoExpandParent: boolean;
+  checkedKeys: string[];
+  expandedKeys: string[];
+  selectedKeys: string[];
 };
 
 export class MarketsTree extends React.PureComponent<Props, State> {
   static propTypes;
-  private static getKey({ id, label, type }: TTreeItem) {
-    return `${id}@${type}@${label}`;
-  }
 
   state: State = {
-    userExpandedKeys: [],
     autoExpandParent: true,
+    checkedKeys: [],
+    expandedKeys: [],
+    selectedKeys: [],
   };
 
-  handleExpand = userExpandedKeys => this.setState({
-    userExpandedKeys,
-    autoExpandParent: false,
-  });
+  onExpand = expandedKeys => {
+    console.log('onExpand', expandedKeys);
+    this.setState({
+      expandedKeys,
+      autoExpandParent: false,
+    });
+  };
 
-  mapData = (data: TTreeItem[]) => data.map((item: TTreeItem) => {
-    const { children, id, isSelected, label, type } = item;
+  onCheck = checkedKeys => {
+    console.log('onCheck', checkedKeys);
+    this.setState({ checkedKeys });
+  };
+
+  onSelect = (selectedKeys, info) => {
+    console.log('onSelect', info);
+    this.setState({ selectedKeys });
+  };
+
+  renderTreeNodes = (data: TTreeItem[]) => data.map((item: TTreeItem) => {
+    const { children, id, label, type } = item;
+    const key = `${id}@${type}@${label}`;
     const props = {
-      children: children && this.mapData(children),
       id,
       title: <span>{label}</span>,
       type,
     };
-    return <Tree.TreeNode key={MarketsTree.getKey(item)} {...props} />
+    if (children) {
+      return (
+        <Tree.TreeNode dataRef={item} key={key} {...props}>
+          {this.renderTreeNodes(item.children)}
+        </Tree.TreeNode>
+      );
+    }
+    return <Tree.TreeNode key={key} {...item} />;
   });
 
   render() {
-    const { autoExpandParent, userExpandedKeys } = this.state;
-    const children = this.mapData(this.props.items);
+    const { autoExpandParent, checkedKeys, expandedKeys, selectedKeys } = this.state;
+    const children = this.renderTreeNodes(this.props.items);
 
     return (
       <div className="MarketsTree">
         <Tree
           autoExpandParent={autoExpandParent}
-          expandedKeys={userExpandedKeys}
-          onExpand={this.handleExpand}
-          // onSelect={this.handleSelect}
+          checkable
+          expandedKeys={expandedKeys}
+          onCheck={this.onCheck}
+          onExpand={this.onExpand}
+          checkedKeys={checkedKeys}
+          onSelect={this.onSelect}
+          selectedKeys={selectedKeys}
         >
           {children}
         </Tree>
